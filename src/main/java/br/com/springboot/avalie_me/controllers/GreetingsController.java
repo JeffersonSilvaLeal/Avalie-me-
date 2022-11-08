@@ -63,41 +63,51 @@ public class GreetingsController {
 
 	@PostMapping(value = "salvar")
 	@ResponseBody
-	public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario){
-		
+	public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) {
+
 		Usuario user = usuarioRepository.save(usuario);
-		
+
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping(value = "delete")
 	@ResponseBody
-	public ResponseEntity<String> delete(@RequestParam Long iduser){
-		
-		usuarioRepository.deleteById(iduser);;
-		
+	public ResponseEntity<String> delete(@RequestParam Long iduser) {
+
+		usuarioRepository.deleteById(iduser);
+		;
+
 		return new ResponseEntity<String>("Usuário excluido com sucesso", HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "buscaporid")
 	@ResponseBody
-	public ResponseEntity<Usuario> buscaPorId(@RequestParam(name = "iduser") Long iduser){
-		
+	public ResponseEntity<Usuario> buscaPorId(@RequestParam(name = "iduser") Long iduser) {
+
 		Usuario usuario = usuarioRepository.findById(iduser).get();
-		
+
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
-	
+
 	@PutMapping(value = "atualizar")
 	@ResponseBody
-	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario){
-		
-		if(usuario.getId() == null) {
+	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario) {
+
+		if (usuario.getId() == null) {
 			return new ResponseEntity<String>("id não foi informado para a atualização.", HttpStatus.OK);
 		}
-		Usuario user = usuarioRepository.saveAndFlush(usuario);	
-		
+		Usuario user = usuarioRepository.saveAndFlush(usuario);
+
 		return new ResponseEntity<Usuario>(user, HttpStatus.OK);
 	}
-	
+
+	@GetMapping(value = "buscarPorNome")
+	@ResponseBody
+	public ResponseEntity<List<Usuario>> buscarPorNome(@RequestParam(name = "name") String name) {
+
+		List<Usuario> usuario = usuarioRepository.buscarPornome(name.trim().toUpperCase());
+
+		return new ResponseEntity<List<Usuario>>(usuario, HttpStatus.OK);
+	}
+
 }
